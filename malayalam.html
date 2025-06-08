@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieSearch - Malayalam Movies</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" xintegrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Base Styles */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #ff6600; /* Orange */
+            --primary-dark: #cc5200;
+            --secondary: #1a1a1a; /* Dark Grey */
+            --text: #e0e0e0; /* Light Grey for main text */
+            --text-light: #b0b0b0; /* Lighter Grey for secondary text */
+            --bg: #0a0a0a; /* Deep Black for background */
+            --card-bg: rgba(25, 25, 25, 0.9); /* Slightly lighter transparent card background */
+            --shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            --shadow-hover: 0 12px 24px rgba(0, 0, 0, 0.7);
+            --radius: 12px;
+            --border-color: rgba(60, 60, 60, 0.5);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top left, rgba(255, 102, 0, 0.1), transparent 30%),
+                        radial-gradient(circle at bottom right, rgba(26, 26, 26, 0.2), transparent 40%);
+            animation: gradientAnim 15s ease infinite alternate;
+            z-index: -1;
+        }
+
+        @keyframes gradientAnim {
+            0% {
+                background-position: 0% 0%;
+            }
+            100% {
+                background-position: 100% 100%;
+            }
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(15px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            height: 45px;
+            filter: drop-shadow(0 0 5px var(--primary));
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: var(--primary); /* Changed text color to primary orange */
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            /* New button-like styling for nav-links a */
+            padding: 10px 18px; /* Add padding */
+            background-color: rgba(60, 60, 60, 0.4); /* Subtle background */
+            border-radius: 8px; /* Rounded corners */
+            border: 1px solid rgba(90, 90, 90, 0.3); /* Subtle border */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* Small shadow */
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+            background-color: rgba(255, 102, 0, 0.15); /* Subtle orange tint on hover */
+            border-color: var(--primary); /* Orange border on hover */
+            box-shadow: 0 4px 10px rgba(255, 102, 0, 0.3); /* Enhanced shadow on hover */
+        }
+
+        .main-container {
+            padding: 40px 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: 3em;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 50px;
+            text-shadow: 0 0 15px rgba(255, 102, 0, 0.4);
+        }
+
+        .loading-indicator {
+            text-align: center;
+            font-size: 1.5em;
+            color: var(--text-light);
+            margin-top: 100px;
+        }
+
+        .genre-section {
+            margin-bottom: 60px;
+            position: relative; /* For scroll arrows */
+        }
+
+        .genre-title {
+            font-size: 2.2em;
+            color: var(--text);
+            margin-bottom: 30px;
+            border-left: 5px solid var(--primary);
+            padding-left: 20px;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        /* New styles for horizontal scrolling */
+        .genre-movies-row-wrapper {
+            position: relative;
+            margin: 0 20px; /* Space for arrows */
+        }
+
+        .genre-movies-row {
+            display: flex;
+            overflow-x: scroll;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
+            gap: 20px; /* Space between movie cards */
+            padding-bottom: 20px; /* Space for scrollbar */
+            padding-left: 10px; /* Padding for first item */
+            padding-right: 10px; /* Padding for last item */
+            scrollbar-width: thin; /* Firefox */
+            scrollbar-color: var(--primary) var(--card-bg); /* Firefox */
+        }
+
+        /* Hide scrollbar for Chrome, Safari, Opera */
+        .genre-movies-row::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .genre-movies-row::-webkit-scrollbar-track {
+            background: var(--card-bg);
+            border-radius: 10px;
+        }
+
+        .genre-movies-row::-webkit-scrollbar-thumb {
+            background-color: var(--primary);
+            border-radius: 10px;
+            border: 2px solid var(--card-bg);
+        }
+
+        .movie-card {
+            flex-shrink: 0; /* Prevent cards from shrinking */
+            width: 300px; /* Fixed width for 3-5 per row */
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .movie-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .movie-card:hover::before {
+            opacity: 1;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 420px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .movie-card:hover .movie-poster {
+            transform: scale(1.05);
+        }
+
+        .movie-info {
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+            margin-top: auto; /* Push info to bottom */
+        }
+
+        .movie-title {
+            margin: 0 0 10px;
+            font-size: 19px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .movie-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .movie-overview {
+            color: var(--text-light);
+            font-size: 14px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Scroll Arrows */
+        .scroll-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0.8;
+            transition: opacity 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .scroll-arrow:hover {
+            opacity: 1;
+            background-color: var(--primary);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .scroll-arrow-left {
+            left: -25px; /* Half of arrow width to be outside */
+        }
+
+        .scroll-arrow-right {
+            right: -25px; /* Half of arrow width to be outside */
+        }
+
+        /* Movie Detail View */
+        .movie-detail-wrapper {
+            position: relative;
+            padding: 0;
+            margin: 0 auto;
+        }
+
+        .detail-backdrop {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            filter: blur(50px) brightness(60%);
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        .movie-detail {
+            max-width: 1200px;
+            margin: 50px auto;
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-hover);
+            padding: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .detail-header {
+            display: flex;
+            gap: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            align-items: flex-start;
+        }
+
+        .detail-poster {
+            flex-shrink: 0;
+            width: 320px;
+            box-shadow: var(--shadow);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .detail-poster img {
+            width: 100%;
+            border-radius: var(--radius);
+            display: block;
+        }
+
+        .detail-info {
+            flex-grow: 1;
+        }
+
+        .detail-title {
+            margin: 0 0 15px;
+            font-size: 38px;
+            font-weight: 700;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(255, 102, 0, 0.3);
+        }
+
+        .detail-meta {
+            color: var(--text-light);
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 16px;
+        }
+
+        .detail-rating {
+            color: #ffcc00;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .tagline {
+            font-style: italic;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            font-size: 18px;
+            border-left: 3px solid var(--primary);
+            padding-left: 15px;
+        }
+
+        .genre-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .genre {
+            background-color: rgba(255, 102, 0, 0.2);
+            color: var(--primary);
+            padding: 6px 15px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid rgba(255, 102, 0, 0.4);
+        }
+
+        .detail-overview {
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-size: 16px;
+            color: var(--text-light);
+        }
+
+        .section-title {
+            margin: 40px 0 20px;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary);
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 80%;
+            background-color: var(--primary);
+            border-radius: 3px;
+        }
+
+        .cast-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 25px;
+            margin: 20px 0;
+        }
+
+        .cast-member {
+            text-align: center;
+            background-color: rgba(35, 35, 35, 0.8);
+            border-radius: var(--radius);
+            padding: 15px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease;
+        }
+
+        .cast-member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+        }
+
+        .cast-photo {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.4);
+        }
+
+        .cast-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text);
+        }
+
+        .cast-character {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .trailer-container {
+            margin: 50px 0;
+            text-align: center;
+        }
+
+        .trailer {
+            width: 100%;
+            max-width: 900px;
+            height: 500px;
+            border: none;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .watch-providers {
+            margin: 50px 0;
+        }
+
+        .provider-type {
+            margin: 25px 0 15px;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .providers-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .provider {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(35, 35, 35, 0.8);
+            padding: 10px;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s ease;
+        }
+
+        .provider:hover {
+            transform: translateY(-3px);
+        }
+
+        .provider-logo {
+            width: 55px;
+            height: 55px;
+            border-radius: 10px;
+            object-fit: contain;
+            background-color: white; /* For logos with transparency */
+            padding: 5px;
+        }
+
+        .provider-name {
+            font-size: 13px;
+            margin-top: 8px;
+            text-align: center;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin: 30px 0 20px;
+            padding: 12px 25px;
+            background-color: var(--card-bg);
+            color: var(--text);
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .back-button:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateX(-5px);
+            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4);
+        }
+        
+        .no-image-placeholder {
+            height: 420px; /* Match poster height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #333;
+            color: #999;
+            font-size: 50px;
+            border-bottom-left-radius: var(--radius);
+            border-bottom-right-radius: var(--radius);
+        }
+
+        .no-image-placeholder-detail {
+            width: 100%;
+            height: 480px; /* Match detail poster height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #333;
+            color: #999;
+            font-size: 80px;
+            border-radius: var(--radius);
+        }
+
+        /* Action buttons for Watchlist/Favorites */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .action-button {
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .action-button.add-to-watchlist, .action-button.add-to-favorites {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .action-button.add-to-watchlist:hover, .action-button.add-to-favorites:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(255, 102, 0, 0.5);
+        }
+
+        .action-button.remove-from-watchlist, .action-button.remove-from-favorites {
+            background-color: var(--card-bg);
+            color: var(--text);
+            border: 1px solid var(--primary);
+        }
+
+        .action-button.remove-from-watchlist:hover, .action-button.remove-from-favorites:hover {
+            background-color: rgba(255, 102, 0, 0.2);
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 1024px) {
+            .movie-detail {
+                margin: 30px 20px;
+                padding: 20px;
+            }
+            .detail-header {
+                gap: 30px;
+            }
+            .detail-poster {
+                width: 280px;
+            }
+            .detail-title {
+                font-size: 32px;
+            }
+            .trailer {
+                height: 400px;
+            }
+            .genre-title {
+                font-size: 1.8em;
+                padding-left: 15px;
+            }
+            .movie-card {
+                width: 250px; /* Adjust for smaller screens */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .logo {
+                height: 35px;
+            }
+            .nav-links {
+                gap: 15px;
+                font-size: 14px;
+            }
+            .main-container {
+                padding: 20px 15px;
+            }
+            .page-title {
+                font-size: 2.5em;
+                margin-bottom: 30px;
+            }
+            .genre-title {
+                font-size: 1.5em;
+                padding-left: 10px;
+                border-left-width: 3px;
+            }
+            .genre-movies-row-wrapper {
+                margin: 0; /* Remove side margins for full width on small screens */
+            }
+            .genre-movies-row {
+                padding-left: 15px; /* Adjust padding for mobile */
+                padding-right: 15px;
+            }
+            .movie-card {
+                width: 180px; /* Adjust for mobile screens */
+                height: auto; /* Allow height to adjust */
+            }
+            .movie-poster {
+                height: 280px;
+            }
+            .no-image-placeholder {
+                height: 280px;
+                font-size: 40px;
+            }
+            .movie-card {
+                font-size: 14px;
+            }
+            .detail-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .detail-poster {
+                width: 80%;
+                max-width: 300px;
+            }
+            .no-image-placeholder-detail {
+                height: 350px;
+                font-size: 60px;
+            }
+            .detail-title {
+                font-size: 28px;
+                margin-top: 20px;
+            }
+            .tagline {
+                padding-left: 0;
+                border-left: none;
+                font-size: 16px;
+            }
+            .section-title {
+                font-size: 20px;
+                padding-left: 0;
+                text-align: center;
+            }
+            .section-title::before {
+                display: none;
+            }
+            .cast-container {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+                gap: 15px;
+            }
+            .cast-photo {
+                width: 70px;
+                height: 70px;
+            }
+            .cast-name {
+                font-size: 13px;
+            }
+            .cast-character {
+                font-size: 11px;
+            }
+            .trailer {
+                height: 250px;
+            }
+            .provider-logo {
+                width: 40px;
+                height: 40px;
+            }
+            .provider-name {
+                font-size: 10px;
+            }
+            .scroll-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2em;
+            }
+            .scroll-arrow-left {
+                left: 5px;
+            }
+            .scroll-arrow-right {
+                right: 5px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 10px 15px;
+            }
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .main-container {
+                padding: 15px;
+            }
+            .movie-poster {
+                height: 250px;
+            }
+            .no-image-placeholder {
+                height: 250px;
+            }
+            .detail-poster {
+                width: 90%;
+            }
+            .no-image-placeholder-detail {
+                height: 300px;
+            }
+            .trailer {
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <img src="https://i.imgur.com/gK1K2z7.png" alt="MovieSearch Logo" class="logo">
+        <div class="nav-links">
+            <a href="exp2.html" title="Back to Home"><i class="fas fa-arrow-left"></i> Back to Home</a>
+            <!-- Removed Trending, Watchlist, and Logout links -->
+        </div>
+    </nav>
+
+    <div class="main-container" id="mainMalayalamContainer">
+        <h1 class="page-title">All Malayalam Movies</h1>
+        <div id="loading" class="loading-indicator">
+            <i class="fas fa-spinner fa-spin"></i> Loading Malayalam movies...
+        </div>
+        <div id="malayalamMoviesContent">
+            <!-- Malayalam movies grouped by genre will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        const apiKey = '0efd8e709f432e48de4378000a436a47';
+        const baseImageUrl = 'https://image.tmdb.org/t/p/';
+        const malayalamLanguageCode = 'ml'; // Language code for Malayalam
+
+        let allGenres = []; // To store all TMDB genres
+        let moviesByGenre = {}; // To store Malayalam movies grouped by genre
+
+        let watchlist = []; // Array to store watchlist movie objects
+        let favorites = []; // Array to store favorites movie objects
+
+        // --- Local Storage Management for Watchlist/Favorites ---
+        function loadLists() {
+            watchlist = JSON.parse(localStorage.getItem('movieWatchlist')) || [];
+            favorites = JSON.parse(localStorage.getItem('movieFavorites')) || [];
+        }
+
+        function saveWatchlist() {
+            localStorage.setItem('movieWatchlist', JSON.stringify(watchlist));
+        }
+
+        function saveFavorites() {
+            localStorage.setItem('movieFavorites', JSON.stringify(favorites));
+        }
+
+        function isMovieInWatchlist(movieId) {
+            return watchlist.some(m => m.id === movieId);
+        }
+
+        function isMovieInFavorites(movieId) {
+            return favorites.some(m => m.id === movieId);
+        }
+
+        function toggleWatchlist(movie) {
+            const index = watchlist.findIndex(m => m.id === movie.id);
+            if (index > -1) {
+                watchlist.splice(index, 1);
+                displayMessageBox(`${movie.title} removed from Watchlist.`);
+            } else {
+                watchlist.push(movie);
+                displayMessageBox(`${movie.title} added to Watchlist.`);
+            }
+            saveWatchlist();
+            // Re-render the detail view to update the button state
+            showMovieDetails(movie.id, false); // Pass false to avoid re-storing original content
+        }
+
+        function toggleFavorites(movie) {
+            const index = favorites.findIndex(m => m.id === movie.id);
+            if (index > -1) {
+                favorites.splice(index, 1);
+                displayMessageBox(`${movie.title} removed from Favorites.`);
+            } else {
+                favorites.push(movie);
+                displayMessageBox(`${movie.title} added to Favorites.`);
+            }
+            saveFavorites();
+            // Re-render the detail view to update the button state
+            showMovieDetails(movie.id, false); // Pass false to avoid re-storing original content
+        }
+        // --- End Local Storage Management ---
+
+        // Helper for retrying fetch calls
+        async function fetchWithRetry(url, options = {}, retries = 3, delay = 1000) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response;
+                } catch (error) {
+                    console.error(`Attempt ${i + 1} failed for ${url}:`, error);
+                    if (i < retries - 1) {
+                        await new Promise(res => setTimeout(res, delay));
+                    } else {
+                        throw error; // Re-throw error after all retries fail
+                    }
+                }
+            }
+        }
+
+        // Custom message box function
+        function displayMessageBox(message) {
+            const messageBox = document.createElement('div');
+            messageBox.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: rgba(0, 0, 0, 0.9);
+                color: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+                z-index: 10000;
+                text-align: center;
+                font-size: 1.2em;
+                border: 2px solid var(--primary);
+            `;
+            messageBox.textContent = message;
+            document.body.appendChild(messageBox);
+
+            setTimeout(() => {
+                messageBox.remove();
+            }, 3000); // Remove after 3 seconds
+        }
+
+        // Function to fetch genres from TMDB
+        async function fetchGenres() {
+            try {
+                const response = await fetchWithRetry(`https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=en`);
+                const data = await response.json();
+                allGenres = data.genres;
+            } catch (error) {
+                console.error('Error fetching genres after retries:', error);
+                document.getElementById('loading').textContent = 'Failed to load genres. Please check your internet connection or API key.';
+                throw error; // Re-throw to propagate the error and prevent further execution if critical
+            }
+        }
+
+        // Function to fetch Malayalam movies
+        async function fetchMalayalamMovies(page = 1) {
+            try {
+                const response = await fetchWithRetry(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=${malayalamLanguageCode}&sort_by=popularity.desc&page=${page}&with_original_language=ml`);
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error(`Error fetching Malayalam movies page ${page} after retries:`, error);
+                return { results: [], total_pages: 0 }; // Return empty data to prevent breaking
+            }
+        }
+
+        // Function to group movies by genre
+        function groupMoviesByGenre(movies) {
+            movies.forEach(movie => {
+                if (movie.genre_ids && movie.genre_ids.length > 0) {
+                    movie.genre_ids.forEach(genreId => {
+                        const genre = allGenres.find(g => g.id === genreId);
+                        if (genre) {
+                            if (!moviesByGenre[genre.name]) {
+                                moviesByGenre[genre.name] = [];
+                            }
+                            // Add movie to the genre list if not already present (to avoid duplicates if a movie has many genres)
+                            if (!moviesByGenre[genre.name].some(m => m.id === movie.id)) {
+                                moviesByGenre[genre.name].push(movie);
+                            }
+                        }
+                    });
+                } else {
+                    // Handle movies with no genre information (e.g., put them in an "Uncategorized" section)
+                    if (!moviesByGenre['Uncategorized']) {
+                        moviesByGenre['Uncategorized'] = [];
+                    }
+                    if (!moviesByGenre['Uncategorized'].some(m => m.id === movie.id)) {
+                        moviesByGenre['Uncategorized'].push(movie);
+                    }
+                }
+            });
+        }
+
+        // Function to display movies grouped by genre
+        function displayMalayalamMoviesByGenre() {
+            const contentDiv = document.getElementById('malayalamMoviesContent');
+            contentDiv.innerHTML = ''; // Clear loading indicator
+
+            // Sort genres alphabetically for consistent display
+            const sortedGenreNames = Object.keys(moviesByGenre).sort();
+
+            sortedGenreNames.forEach(genreName => {
+                const genreSection = document.createElement('div');
+                genreSection.className = 'genre-section';
+
+                const genreTitle = document.createElement('h2');
+                genreTitle.className = 'genre-title';
+                genreTitle.textContent = genreName;
+                genreSection.appendChild(genreTitle);
+
+                // New wrapper for horizontal scrolling and arrows
+                const genreRowWrapper = document.createElement('div');
+                genreRowWrapper.className = 'genre-movies-row-wrapper';
+
+                const moviesRow = document.createElement('div');
+                moviesRow.className = 'genre-movies-row';
+
+                moviesByGenre[genreName].forEach(movie => {
+                    const movieCard = document.createElement('div');
+                    movieCard.className = 'movie-card';
+                    movieCard.onclick = () => showMovieDetails(movie.id, true); // Store current section before going to detail
+
+                    const posterPath = movie.poster_path ? baseImageUrl + 'w500' + movie.poster_path : '';
+                    const posterImg = posterPath ?
+                        `<img src="${posterPath}" alt="${movie.title}" class="movie-poster">` :
+                        '<div class="no-image-placeholder"><i class="fas fa-film"></i></div>';
+
+                    movieCard.innerHTML = `
+                        ${posterImg}
+                        <div class="movie-info">
+                            <h3 class="movie-title">${movie.title}</h3>
+                            <div class="movie-meta">
+                                <span>${movie.release_date ? movie.release_date.slice(0, 4) : 'N/A'}</span>
+                                <span>⭐ ${movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A'}</span>
+                            </div>
+                            <p class="movie-overview">${movie.overview || 'No overview available.'}</p>
+                        </div>
+                    `;
+                    moviesRow.appendChild(movieCard);
+                });
+
+                // Add scroll arrows
+                const leftArrow = document.createElement('button');
+                leftArrow.className = 'scroll-arrow scroll-arrow-left';
+                leftArrow.innerHTML = '<i class="fas fa-chevron-left"></i>';
+                leftArrow.onclick = () => {
+                    moviesRow.scrollBy({ left: -moviesRow.offsetWidth * 0.8, behavior: 'smooth' });
+                };
+
+                const rightArrow = document.createElement('button');
+                rightArrow.className = 'scroll-arrow scroll-arrow-right';
+                rightArrow.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                rightArrow.onclick = () => {
+                    moviesRow.scrollBy({ left: moviesRow.offsetWidth * 0.8, behavior: 'smooth' });
+                };
+
+                genreRowWrapper.appendChild(leftArrow);
+                genreRowWrapper.appendChild(moviesRow);
+                genreRowWrapper.appendChild(rightArrow);
+                
+                genreSection.appendChild(genreRowWrapper);
+                contentDiv.appendChild(genreSection);
+            });
+        }
+
+        // Function to show movie details
+        async function showMovieDetails(movieId, storeOriginal = true) {
+            const mainContainer = document.querySelector('.main-container');
+            
+            if (storeOriginal) {
+                window.malayalamMoviesOriginalContent = mainContainer.innerHTML;
+            }
+
+            mainContainer.innerHTML = `<div id="loading-detail" class="loading-indicator">
+                                            <i class="fas fa-spinner fa-spin"></i> Loading movie details...
+                                        </div>`;
+
+            try {
+                const [movie, credits, videos, providers] = await Promise.all([
+                    fetchWithRetry(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en`).then(res => res.json()),
+                    fetchWithRetry(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`).then(res => res.json()),
+                    fetchWithRetry(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}&language=en`).then(res => res.json()),
+                    fetchWithRetry(`https://api.themoviedb.org/3/movie/${movieId}/watch/providers?api_key=${apiKey}`).then(res => res.json())
+                ]);
+
+                displayMovieDetailsContent(movie, credits, videos, providers);
+            } catch (error) {
+                displayMessageBox('Error fetching movie details: ' + error.message + '. Please try again.');
+                mainContainer.innerHTML = window.malayalamMoviesOriginalContent;
+            }
+        }
+
+        // Helper function to display the actual movie detail content
+        function displayMovieDetailsContent(movie, credits, videos, providers) {
+            const mainContainer = document.getElementById('mainMalayalamContainer');
+            
+            // Determine button states
+            const inWatchlist = isMovieInWatchlist(movie.id);
+            const inFavorites = isMovieInFavorites(movie.id);
+
+            const watchlistButtonClass = inWatchlist ? 'remove-from-watchlist' : 'add-to-watchlist';
+            const watchlistButtonText = inWatchlist ? '<i class="fas fa-minus-circle"></i> Remove from Watchlist' : '<i class="fas fa-plus-circle"></i> Add to Watchlist';
+            const favoritesButtonClass = inFavorites ? 'remove-from-favorites' : 'add-to-favorites';
+            const favoritesButtonText = inFavorites ? '<i class="fas fa-heart-crack"></i> Remove from Favorites' : '<i class="fas fa-heart"></i> Add to Favorites';
+
+            // Format genres
+            const genres = movie.genres ? movie.genres.map(g => `<span class="genre">${g.name}</span>`).join('') : '';
+            
+            // Format runtime
+            const runtime = movie.runtime ? `${Math.floor(movie.runtime / 60)}h ${movie.runtime % 60}m` : 'N/A';
+            
+            // Get trailer (first YouTube video)
+            const trailer = videos.results.find(v => v.site === 'YouTube' && v.type === 'Trailer');
+            const trailerSrc = trailer ? `https://www.youtube.com/embed/${trailer.key}` : '';
+
+            // Format cast (top 10)
+            const cast = credits.cast.slice(0, 10).map(person => `
+                <div class="cast-member">
+                    <img src="${person.profile_path ? baseImageUrl + 'w185' + person.profile_path : 'https://via.placeholder.com/100x100?text=No+Image'}" 
+                         alt="${person.name}" class="cast-photo">
+                    <div class="cast-name">${person.name}</div>
+                    <div class="cast-character">${person.character || 'N/A'}</div>
+                </div>
+            `).join('');
+            
+            // Format watch providers
+            const usProviders = providers.results?.US;
+            let providersHtml = '';
+            
+            if (usProviders) {
+                if (usProviders.flatrate) {
+                    providersHtml += `
+                        <div class="provider-type">Streaming</div>
+                        <div class="providers-list">
+                            ${usProviders.flatrate.map(p => `
+                                <div class="provider">
+                                    <img src="${baseImageUrl}w45${p.logo_path}" alt="${p.provider_name}" class="provider-logo">
+                                    <div class="provider-name">${p.provider_name}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+                
+                if (usProviders.rent) {
+                    providersHtml += `
+                        <div class="provider-type">Rent</div>
+                        <div class="providers-list">
+                            ${usProviders.rent.map(p => `
+                                <div class="provider">
+                                    <img src="${baseImageUrl}w45${p.logo_path}" alt="${p.provider_name}" class="provider-logo">
+                                    <div class="provider-name">${p.provider_name}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+                
+                if (usProviders.buy) {
+                    providersHtml += `
+                        <div class="provider-type">Buy</div>
+                        <div class="providers-list">
+                            ${usProviders.buy.map(p => `
+                                <div class="provider">
+                                    <img src="${baseImageUrl}w45${p.logo_path}" alt="${p.provider_name}" class="provider-logo">
+                                    <div class="provider-name">${p.provider_name}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+            } else {
+                providersHtml = '<p style="color:var(--text-light); text-align:center;">No watch providers information available for US.</p>';
+            }
+            
+            // Create detail view
+            mainContainer.innerHTML = `
+                <button class="back-button" onclick="mainContainer.innerHTML = window.malayalamMoviesOriginalContent;"><i class="fas fa-arrow-left"></i> Back to Malayalam Movies</button>
+
+                <div class="movie-detail-wrapper">
+                    ${movie.backdrop_path ? `<img src="${baseImageUrl}original${movie.backdrop_path}" class="detail-backdrop" alt="Backdrop">` : ''}
+                    <div class="movie-detail">
+                        <div class="detail-header">
+                            <div class="detail-poster">
+                                ${movie.poster_path ? 
+                                    `<img src="${baseImageUrl}w500${movie.poster_path}" alt="${movie.title}">` : 
+                                    '<div class="no-image-placeholder-detail"><i class="fas fa-film"></i></div>'}
+                            </div>
+                            
+                            <div class="detail-info">
+                                <h1 class="detail-title">${movie.title}</h1>
+                                <div class="detail-meta">
+                                    <span>${movie.release_date ? movie.release_date.slice(0, 4) : 'N/A'}</span>
+                                    <span>${runtime}</span>
+                                    <span class="detail-rating">⭐ ${movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A'}/10</span>
+                                </div>
+                                
+                                ${movie.tagline ? `<div class="tagline">"${movie.tagline}"</div>` : ''}
+                                
+                                <div class="genre-list">${genres}</div>
+                                
+                                <div class="detail-overview">${movie.overview || 'No overview available.'}</div>
+                                
+                                ${movie.homepage ? `
+                                    <a href="${movie.homepage}" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 8px;">
+                                        <i class="fas fa-external-link-alt"></i> Official Website
+                                    </a>
+                                ` : ''}
+
+                                <div class="action-buttons">
+                                    <button class="action-button ${watchlistButtonClass}" onclick="toggleWatchlist(${encodeURIComponent(JSON.stringify(movie))})">
+                                        ${watchlistButtonText}
+                                    </button>
+                                    <button class="action-button ${favoritesButtonClass}" onclick="toggleFavorites(${encodeURIComponent(JSON.stringify(movie))})">
+                                        ${favoritesButtonText}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        ${trailerSrc ? `
+                            <div class="trailer-container">
+                                <h3 class="section-title">Trailer</h3>
+                                <iframe class="trailer" src="${trailerSrc}" 
+                                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen></iframe>
+                            </div>
+                        ` : ''}
+                        
+                        <div class="cast-section">
+                            <h3 class="section-title">Cast</h3>
+                            <div class="cast-container">
+                                ${cast || '<p style="text-align:center; color:var(--text-light);">No cast information available.</p>'}
+                            </div>
+                        </div>
+                        
+                        <div class="watch-providers">
+                            <h3 class="section-title">Where to Watch</h3>
+                            ${providersHtml}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+
+        // Main initialization function
+        async function initMalayalamMoviesPage() {
+            document.getElementById('loading').style.display = 'block'; // Show loading indicator
+            document.getElementById('loading').textContent = 'Loading Malayalam movies...'; // Reset text
+
+            loadLists(); // Load watchlist and favorites from local storage
+
+            try {
+                await fetchGenres(); // Fetch genres first
+                if (allGenres.length === 0) {
+                    // If genres couldn't be fetched, display an error and stop
+                    document.getElementById('loading').textContent = 'Failed to load movie genres. Cannot display movies. Please check your internet connection or API key.';
+                    return;
+                }
+
+                // Fetch multiple pages of Malayalam movies to get a comprehensive list
+                // TMDB API limits to 20 pages for discover endpoint, fetching 5 pages for a good sample
+                const totalPagesToFetch = 5; 
+                let allMalayalamMovies = [];
+
+                for (let i = 1; i <= totalPagesToFetch; i++) {
+                    const data = await fetchMalayalamMovies(i);
+                    allMalayalamMovies = allMalayalamMovies.concat(data.results);
+                    // Optional: Add a delay here if you hit API rate limits
+                    // await new Promise(resolve => setTimeout(resolve, 200)); 
+                }
+                
+                if (allMalayalamMovies.length === 0) {
+                    document.getElementById('loading').textContent = 'No Malayalam movies found or failed to load movies.';
+                    return;
+                }
+
+                groupMoviesByGenre(allMalayalamMovies); // Group them
+                document.getElementById('loading').style.display = 'none'; // Hide loading indicator
+                displayMalayalamMoviesByGenre(); // Display them
+
+            } catch (error) {
+                console.error('Initialization failed:', error);
+                // Error message already set by fetchGenres if it failed
+                // If error came from fetchMalayalamMovies, it would be logged there
+            }
+        }
+
+        // Initialize the page when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', initMalayalamMoviesPage);
+    </script>
+    <style>
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 30px 0 20px;
+    padding: 12px 25px;
+    background-color: rgba(60, 60, 60, 0.4);
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    border: 1px solid rgba(90, 90, 90, 0.3);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.back-button:hover {
+    background-color: rgba(255, 102, 0, 0.15);
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateX(-5px);
+    box-shadow: 0 4px 10px rgba(255, 102, 0, 0.3);
+}
+</style>
+<script>
+// Allow back button to work properly from detail view
+function backToMalayalamMovies() {
+    if (window.malayalamMoviesOriginalContent) {
+        const mainContainer = document.getElementById('mainMalayalamContainer');
+        mainContainer.innerHTML = window.malayalamMoviesOriginalContent;
+    } else {
+        window.location.href = 'malayalam.html';
+    }
+}
+
+// Fix action buttons (watchlist/favorite) toggle bug (parse properly from button attributes)
+function decodeMovieData(encodedData) {
+    try {
+        return JSON.parse(decodeURIComponent(encodedData));
+    } catch (e) {
+        console.error("Error decoding movie data:", e);
+        return null;
+    }
+}
+
+const oldToggleWatchlist = toggleWatchlist;
+const oldToggleFavorites = toggleFavorites;
+
+function toggleWatchlist(encodedMovie) {
+    const movie = typeof encodedMovie === 'string' ? decodeMovieData(encodedMovie) : encodedMovie;
+    if (movie) oldToggleWatchlist(movie);
+}
+
+function toggleFavorites(encodedMovie) {
+    const movie = typeof encodedMovie === 'string' ? decodeMovieData(encodedMovie) : encodedMovie;
+    if (movie) oldToggleFavorites(movie);
+}
+
+document.addEventListener("click", function (e) {
+    if (e.target.closest(".back-button")?.textContent?.includes("Back to Malayalam Movies")) {
+        e.preventDefault();
+        backToMalayalamMovies();
+    }
+});
+</script>
+
+</body>
+</html>

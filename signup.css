@@ -1,0 +1,125 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  background-color: black;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.bgimg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.signup-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+}
+
+.signup-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.signup-card h2 {
+  font-size: 24px;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.signup-card p {
+  font-size: 14px;
+  color: #ddd;
+  margin-bottom: 25px;
+}
+
+.signup-card input {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  color: #ffffff;
+  width: 100%;
+}
+
+.signup-card input:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+.signup-card input::placeholder {
+  color: #ffffff;
+}
+
+.signup-card button {
+  padding: 12px;
+  background-color: #ff6600;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-size: 16px;
+}
+
+.signup-card button:hover {
+  background-color: #e65c00;
+}
+
+.footer-text {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #aaa;
+  text-align: center;
+}
+
+.footer-text a {
+  color: #ff6600;
+  text-decoration: none;
+}
+.back-button {
+      position: fixed;
+      top: 20px;
+      left: 120px; /* Move a little right so logo and back button don't overlap */
+      background-color: #ffffff;
+      color: #333333;
+      padding: 10px 20px;
+      font-size: 18px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .back-button:hover {
+      background-color: #ff6600;
+      color: white;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+      transform: translateX(-5px);
+    }
