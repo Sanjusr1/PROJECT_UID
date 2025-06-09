@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MovieSearch - English Movies</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" xintegrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
@@ -20,6 +20,8 @@
             --shadow-hover: 0 12px 24px rgba(0, 0, 0, 0.7);
             --radius: 12px;
             --border-color: rgba(60, 60, 60, 0.5);
+            --watchlist-hover: #28a745; /* Green for watchlist */
+            --favorites-hover: #dc3545; /* Red for favorites */
         }
 
         body {
@@ -47,12 +49,8 @@
         }
 
         @keyframes gradientAnim {
-            0% {
-                background-position: 0% 0%;
-            }
-            100% {
-                background-position: 100% 100%;
-            }
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
         }
 
         .navbar {
@@ -79,28 +77,26 @@
         }
 
         .nav-links a {
-            color: var(--primary); /* Changed text color to primary orange */
+            color: var(--primary);
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s ease, transform 0.2s ease;
             display: flex;
             align-items: center;
             gap: 8px;
-
-            /* New button-like styling for nav-links a */
-            padding: 10px 18px; /* Add padding */
-            background-color: rgba(60, 60, 60, 0.4); /* Subtle background */
-            border-radius: 8px; /* Rounded corners */
-            border: 1px solid rgba(90, 90, 90, 0.3); /* Subtle border */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* Small shadow */
+            padding: 10px 18px;
+            background-color: rgba(60, 60, 60, 0.4);
+            border-radius: 8px;
+            border: 1px solid rgba(90, 90, 90, 0.3);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
 
         .nav-links a:hover {
             color: var(--primary);
             transform: translateY(-2px);
-            background-color: rgba(255, 102, 0, 0.15); /* Subtle orange tint on hover */
-            border-color: var(--primary); /* Orange border on hover */
-            box-shadow: 0 4px 10px rgba(255, 102, 0, 0.3); /* Enhanced shadow on hover */
+            background-color: rgba(255, 102, 0, 0.15);
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(255, 102, 0, 0.3);
         }
 
         .main-container {
@@ -126,7 +122,7 @@
 
         .genre-section {
             margin-bottom: 60px;
-            position: relative; /* For scroll arrows */
+            position: relative;
         }
 
         .genre-title {
@@ -139,26 +135,24 @@
             text-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
 
-        /* New styles for horizontal scrolling */
         .genre-movies-row-wrapper {
             position: relative;
-            margin: 0 20px; /* Space for arrows */
+            margin: 0 20px;
         }
 
         .genre-movies-row {
             display: flex;
             overflow-x: scroll;
             scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
-            gap: 20px; /* Space between movie cards */
-            padding-bottom: 20px; /* Space for scrollbar */
-            padding-left: 10px; /* Padding for first item */
-            padding-right: 10px; /* Padding for last item */
-            scrollbar-width: thin; /* Firefox */
-            scrollbar-color: var(--primary) var(--card-bg); /* Firefox */
+            -webkit-overflow-scrolling: touch;
+            gap: 20px;
+            padding-bottom: 20px;
+            padding-left: 10px;
+            padding-right: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) var(--card-bg);
         }
 
-        /* Hide scrollbar for Chrome, Safari, Opera */
         .genre-movies-row::-webkit-scrollbar {
             height: 8px;
         }
@@ -175,8 +169,8 @@
         }
 
         .movie-card {
-            flex-shrink: 0; /* Prevent cards from shrinking */
-            width: 300px; /* Fixed width for 3-5 per row */
+            flex-shrink: 0;
+            width: 300px;
             background-color: var(--card-bg);
             border-radius: var(--radius);
             overflow: hidden;
@@ -225,7 +219,7 @@
             padding: 20px;
             position: relative;
             z-index: 2;
-            margin-top: auto; /* Push info to bottom */
+            margin-top: auto;
         }
 
         .movie-title {
@@ -255,7 +249,6 @@
             overflow: hidden;
         }
 
-        /* Scroll Arrows */
         .scroll-arrow {
             position: absolute;
             top: 50%;
@@ -283,14 +276,13 @@
         }
 
         .scroll-arrow-left {
-            left: -25px; /* Half of arrow width to be outside */
+            left: -25px;
         }
 
         .scroll-arrow-right {
-            right: -25px; /* Half of arrow width to be outside */
+            right: -25px;
         }
 
-        /* Movie Detail View */
         .movie-detail-wrapper {
             position: relative;
             padding: 0;
@@ -518,7 +510,7 @@
             height: 55px;
             border-radius: 10px;
             object-fit: contain;
-            background-color: white; /* For logos with transparency */
+            background-color: white;
             padding: 5px;
         }
 
@@ -538,24 +530,34 @@
             padding: 12px 25px;
             background-color: var(--card-bg);
             color: var(--text);
-            border: none;
+            border: 2px solid var(--primary);
             border-radius: var(--radius);
             cursor: pointer;
             font-weight: 600;
             font-size: 16px;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
             box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
         }
 
         .back-button:hover {
             background-color: var(--primary);
             color: white;
-            transform: translateX(-5px);
-            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4);
+            transform: translateX(-5px) scale(1.05);
+            box-shadow: 0 6px 18px rgba(255, 102, 0, 0.5);
         }
-        
+
+        .back-button i {
+            transition: transform 0.3s ease;
+        }
+
+        .back-button:hover i {
+            transform: translateX(-3px);
+        }
+
         .no-image-placeholder {
-            height: 420px; /* Match poster height */
+            height: 420px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -568,7 +570,7 @@
 
         .no-image-placeholder-detail {
             width: 100%;
-            height: 480px; /* Match detail poster height */
+            height: 480px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -578,7 +580,6 @@
             border-radius: var(--radius);
         }
 
-        /* Action buttons for Watchlist/Favorites */
         .action-buttons {
             display: flex;
             gap: 15px;
@@ -599,32 +600,76 @@
             align-items: center;
             gap: 8px;
             box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
         }
 
-        .action-button.add-to-watchlist, .action-button.add-to-favorites {
+        .action-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .action-button:hover::after {
+            left: 100%;
+        }
+
+        .action-button.add-to-watchlist {
             background-color: var(--primary);
             color: white;
+            border: 2px solid var(--primary);
         }
 
-        .action-button.add-to-watchlist:hover, .action-button.add-to-favorites:hover {
-            background-color: var(--primary-dark);
+        .action-button.add-to-watchlist:hover {
+            background-color: var(--watchlist-hover);
+            border-color: var(--watchlist-hover);
             transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(255, 102, 0, 0.5);
+            box-shadow: 0 6px 12px rgba(40, 167, 69, 0.5);
         }
 
-        .action-button.remove-from-watchlist, .action-button.remove-from-favorites {
-            background-color: var(--card-bg);
+        .action-button.remove-from-watchlist {
+            background-color: transparent;
             color: var(--text);
-            border: 1px solid var(--primary);
+            border: 2px solid var(--watchlist-hover);
         }
 
-        .action-button.remove-from-watchlist:hover, .action-button.remove-from-favorites:hover {
-            background-color: rgba(255, 102, 0, 0.2);
-            color: var(--primary);
+        .action-button.remove-from-watchlist:hover {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: var(--watchlist-hover);
             transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 6px 12px rgba(40, 167, 69, 0.3);
         }
 
+        .action-button.add-to-favorites {
+            background-color: var(--primary);
+            color: white;
+            border: 2px solid var(--primary);
+        }
+
+        .action-button.add-to-favorites:hover {
+            background-color: var(--favorites-hover);
+            border-color: var(--favorites-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(220, 53, 69, 0.5);
+        }
+
+        .action-button.remove-from-favorites {
+            background-color: transparent;
+            color: var(--text);
+            border: 2px solid var(--favorites-hover);
+        }
+
+        .action-button.remove-from-favorites:hover {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: var(--favorites-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(220, 53, 69, 0.3);
+        }
 
         /* Responsive styles */
         @media (max-width: 1024px) {
@@ -649,7 +694,7 @@
                 padding-left: 15px;
             }
             .movie-card {
-                width: 250px; /* Adjust for smaller screens */
+                width: 250px;
             }
         }
 
@@ -678,15 +723,15 @@
                 border-left-width: 3px;
             }
             .genre-movies-row-wrapper {
-                margin: 0; /* Remove side margins for full width on small screens */
+                margin: 0;
             }
             .genre-movies-row {
-                padding-left: 15px; /* Adjust padding for mobile */
+                padding-left: 15px;
                 padding-right: 15px;
             }
             .movie-card {
-                width: 180px; /* Adjust for mobile screens */
-                height: auto; /* Allow height to adjust */
+                width: 180px;
+                height: auto;
             }
             .movie-poster {
                 height: 280px;
@@ -763,6 +808,10 @@
             .scroll-arrow-right {
                 right: 5px;
             }
+            .back-button, .action-button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -791,15 +840,18 @@
             .trailer {
                 height: 180px;
             }
+            .back-button, .action-button {
+                padding: 8px 15px;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <img src="https://i.imgur.com/gK1K2z7.png" alt="MovieSearch Logo" class="logo">
+        <img src="logo.jpg" alt="MovieSearch Logo" class="logo">
         <div class="nav-links">
             <a href="exp2.html" title="Back to Home"><i class="fas fa-arrow-left"></i> Back to Home</a>
-            <!-- Removed Trending, Watchlist, and Logout links -->
         </div>
     </nav>
 
@@ -808,21 +860,19 @@
         <div id="loading" class="loading-indicator">
             <i class="fas fa-spinner fa-spin"></i> Loading English movies...
         </div>
-        <div id="englishMoviesContent">
-            <!-- English movies grouped by genre will be loaded here -->
-        </div>
+        <div id="englishMoviesContent"></div>
     </div>
 
     <script>
         const apiKey = '0efd8e709f432e48de4378000a436a47';
         const baseImageUrl = 'https://image.tmdb.org/t/p/';
-        const englishLanguageCode = 'en'; // Language code for English
+        const englishLanguageCode = 'en';
 
-        let allGenres = []; // To store all TMDB genres
-        let moviesByGenre = {}; // To store English movies grouped by genre
-
-        let watchlist = []; // Array to store watchlist movie objects
-        let favorites = []; // Array to store favorites movie objects
+        let allGenres = [];
+        let moviesByGenre = {};
+        let allEnglishMovies = [];
+        let watchlist = [];
+        let favorites = [];
 
         // --- Local Storage Management for Watchlist/Favorites ---
         function loadLists() {
@@ -846,36 +896,50 @@
             return favorites.some(m => m.id === movieId);
         }
 
-        function toggleWatchlist(movie) {
+        function toggleWatchlist(movieId) {
+            const movie = allEnglishMovies.find(m => m.id === movieId);
+            if (!movie) {
+                console.error('Movie not found for ID:', movieId);
+                return;
+            }
             const index = watchlist.findIndex(m => m.id === movie.id);
             if (index > -1) {
                 watchlist.splice(index, 1);
-                displayMessageBox(`${movie.title} removed from Watchlist.`);
+                displayMessageBox(`${sanitizeHTML(movie.title)} removed from Watchlist.`);
             } else {
                 watchlist.push(movie);
-                displayMessageBox(`${movie.title} added to Watchlist.`);
+                displayMessageBox(`${sanitizeHTML(movie.title)} added to Watchlist.`);
             }
             saveWatchlist();
-            // Re-render the detail view to update the button state
-            showMovieDetails(movie.id, false); // Pass false to avoid re-storing original content
+            showMovieDetails(movieId, false);
         }
 
-        function toggleFavorites(movie) {
+        function toggleFavorites(movieId) {
+            const movie = allEnglishMovies.find(m => m.id === movieId);
+            if (!movie) {
+                console.error('Movie not found for ID:', movieId);
+                return;
+            }
             const index = favorites.findIndex(m => m.id === movie.id);
             if (index > -1) {
                 favorites.splice(index, 1);
-                displayMessageBox(`${movie.title} removed from Favorites.`);
+                displayMessageBox(`${sanitizeHTML(movie.title)} removed from Favorites.`);
             } else {
                 favorites.push(movie);
-                displayMessageBox(`${movie.title} added to Favorites.`);
+                displayMessageBox(`${sanitizeHTML(movie.title)} added to Favorites.`);
             }
             saveFavorites();
-            // Re-render the detail view to update the button state
-            showMovieDetails(movie.id, false); // Pass false to avoid re-storing original content
+            showMovieDetails(movieId, false);
         }
-        // --- End Local Storage Management ---
 
-        // Helper for retrying fetch calls
+        // --- Helper to sanitize HTML ---
+        function sanitizeHTML(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // --- Helper for retrying fetch calls ---
         async function fetchWithRetry(url, options = {}, retries = 3, delay = 1000) {
             for (let i = 0; i < retries; i++) {
                 try {
@@ -889,13 +953,13 @@
                     if (i < retries - 1) {
                         await new Promise(res => setTimeout(res, delay));
                     } else {
-                        throw error; // Re-throw error after all retries fail
+                        throw error;
                     }
                 }
             }
         }
 
-        // Custom message box function
+        // --- Custom message box function ---
         function displayMessageBox(message) {
             const messageBox = document.createElement('div');
             messageBox.style.cssText = `
@@ -918,36 +982,43 @@
 
             setTimeout(() => {
                 messageBox.remove();
-            }, 3000); // Remove after 3 seconds
+            }, 3000);
         }
 
-        // Function to fetch genres from TMDB
+        // --- Fetch genres from TMDB ---
         async function fetchGenres() {
             try {
                 const response = await fetchWithRetry(`https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=en`);
                 const data = await response.json();
+                if (!data.genres || !Array.isArray(data.genres)) {
+                    throw new Error('Invalid genres data received');
+                }
                 allGenres = data.genres;
             } catch (error) {
-                console.error('Error fetching genres after retries:', error);
+                console.error('Error fetching genres:', error);
                 document.getElementById('loading').textContent = 'Failed to load genres. Please check your internet connection or API key.';
-                throw error; // Re-throw to propagate the error and prevent further execution if critical
+                throw error;
             }
         }
 
-        // Function to fetch English movies
+        // --- Fetch English movies ---
         async function fetchEnglishMovies(page = 1) {
             try {
                 const response = await fetchWithRetry(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=${englishLanguageCode}&sort_by=popularity.desc&page=${page}&with_original_language=en`);
                 const data = await response.json();
+                if (!data.results || !Array.isArray(data.results)) {
+                    throw new Error('Invalid movies data received');
+                }
                 return data;
             } catch (error) {
-                console.error(`Error fetching English movies page ${page} after retries:`, error);
-                return { results: [], total_pages: 0 }; // Return empty data to prevent breaking
+                console.error(`Error fetching English movies page ${page}:`, error);
+                return { results: [], total_pages: 0 };
             }
         }
 
-        // Function to group movies by genre
+        // --- Group movies by genre ---
         function groupMoviesByGenre(movies) {
+            moviesByGenre = {};
             movies.forEach(movie => {
                 if (movie.genre_ids && movie.genre_ids.length > 0) {
                     movie.genre_ids.forEach(genreId => {
@@ -956,14 +1027,12 @@
                             if (!moviesByGenre[genre.name]) {
                                 moviesByGenre[genre.name] = [];
                             }
-                            // Add movie to the genre list if not already present (to avoid duplicates if a movie has many genres)
                             if (!moviesByGenre[genre.name].some(m => m.id === movie.id)) {
                                 moviesByGenre[genre.name].push(movie);
                             }
                         }
                     });
                 } else {
-                    // Handle movies with no genre information (e.g., put them in an "Uncategorized" section)
                     if (!moviesByGenre['Uncategorized']) {
                         moviesByGenre['Uncategorized'] = [];
                     }
@@ -974,12 +1043,11 @@
             });
         }
 
-        // Function to display movies grouped by genre
+        // --- Display movies grouped by genre ---
         function displayEnglishMoviesByGenre() {
             const contentDiv = document.getElementById('englishMoviesContent');
-            contentDiv.innerHTML = ''; // Clear loading indicator
+            contentDiv.innerHTML = '';
 
-            // Sort genres alphabetically for consistent display
             const sortedGenreNames = Object.keys(moviesByGenre).sort();
 
             sortedGenreNames.forEach(genreName => {
@@ -991,7 +1059,6 @@
                 genreTitle.textContent = genreName;
                 genreSection.appendChild(genreTitle);
 
-                // New wrapper for horizontal scrolling and arrows
                 const genreRowWrapper = document.createElement('div');
                 genreRowWrapper.className = 'genre-movies-row-wrapper';
 
@@ -1001,28 +1068,27 @@
                 moviesByGenre[genreName].forEach(movie => {
                     const movieCard = document.createElement('div');
                     movieCard.className = 'movie-card';
-                    movieCard.onclick = () => showMovieDetails(movie.id, true); // Store current section before going to detail
+                    movieCard.dataset.movieId = movie.id;
 
                     const posterPath = movie.poster_path ? baseImageUrl + 'w500' + movie.poster_path : '';
                     const posterImg = posterPath ?
-                        `<img src="${posterPath}" alt="${movie.title}" class="movie-poster">` :
+                        `<img src="${posterPath}" alt="${sanitizeHTML(movie.title)}" class="movie-poster">` :
                         '<div class="no-image-placeholder"><i class="fas fa-film"></i></div>';
 
                     movieCard.innerHTML = `
                         ${posterImg}
                         <div class="movie-info">
-                            <h3 class="movie-title">${movie.title}</h3>
+                            <h3 class="movie-title">${sanitizeHTML(movie.title)}</h3>
                             <div class="movie-meta">
                                 <span>${movie.release_date ? movie.release_date.slice(0, 4) : 'N/A'}</span>
                                 <span>⭐ ${movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A'}</span>
                             </div>
-                            <p class="movie-overview">${movie.overview || 'No overview available.'}</p>
+                            <p class="movie-overview">${sanitizeHTML(movie.overview || 'No overview available.')}</p>
                         </div>
                     `;
                     moviesRow.appendChild(movieCard);
                 });
 
-                // Add scroll arrows
                 const leftArrow = document.createElement('button');
                 leftArrow.className = 'scroll-arrow scroll-arrow-left';
                 leftArrow.innerHTML = '<i class="fas fa-chevron-left"></i>';
@@ -1044,16 +1110,24 @@
                 genreSection.appendChild(genreRowWrapper);
                 contentDiv.appendChild(genreSection);
             });
+
+            attachMovieCardClickHandlers();
         }
 
-        // Function to show movie details
-        async function showMovieDetails(movieId, storeOriginal = true) {
-            const mainContainer = document.querySelector('.main-container');
-            
-            if (storeOriginal) {
-                window.englishMoviesOriginalContent = mainContainer.innerHTML;
-            }
+        // --- Re-attach click handlers to movie cards ---
+        function attachMovieCardClickHandlers() {
+            const movieCards = document.querySelectorAll('.movie-card');
+            movieCards.forEach(card => {
+                const movieId = parseInt(card.dataset.movieId);
+                if (!isNaN(movieId)) {
+                    card.onclick = () => showMovieDetails(movieId, true);
+                }
+            });
+        }
 
+        // --- Show movie details ---
+        async function showMovieDetails(movieId, storeOriginal = true) {
+            const mainContainer = document.getElementById('mainEnglishContainer');
             mainContainer.innerHTML = `<div id="loading-detail" class="loading-indicator">
                                             <i class="fas fa-spinner fa-spin"></i> Loading movie details...
                                         </div>`;
@@ -1066,18 +1140,22 @@
                     fetchWithRetry(`https://api.themoviedb.org/3/movie/${movieId}/watch/providers?api_key=${apiKey}`).then(res => res.json())
                 ]);
 
+                if (!movie || !movie.id) {
+                    throw new Error('Invalid movie data received');
+                }
+
                 displayMovieDetailsContent(movie, credits, videos, providers);
             } catch (error) {
+                console.error('Error fetching movie details:', error);
                 displayMessageBox('Error fetching movie details: ' + error.message + '. Please try again.');
-                mainContainer.innerHTML = window.englishMoviesOriginalContent;
+                goBackToEnglishMovies();
             }
         }
 
-        // Helper function to display the actual movie detail content
+        // --- Display movie details content ---
         function displayMovieDetailsContent(movie, credits, videos, providers) {
             const mainContainer = document.getElementById('mainEnglishContainer');
             
-            // Determine button states
             const inWatchlist = isMovieInWatchlist(movie.id);
             const inFavorites = isMovieInFavorites(movie.id);
 
@@ -1086,27 +1164,21 @@
             const favoritesButtonClass = inFavorites ? 'remove-from-favorites' : 'add-to-favorites';
             const favoritesButtonText = inFavorites ? '<i class="fas fa-heart-crack"></i> Remove from Favorites' : '<i class="fas fa-heart"></i> Add to Favorites';
 
-            // Format genres
-            const genres = movie.genres ? movie.genres.map(g => `<span class="genre">${g.name}</span>`).join('') : '';
-            
-            // Format runtime
+            const genres = movie.genres ? movie.genres.map(g => `<span class="genre">${sanitizeHTML(g.name)}</span>`).join('') : '';
             const runtime = movie.runtime ? `${Math.floor(movie.runtime / 60)}h ${movie.runtime % 60}m` : 'N/A';
             
-            // Get trailer (first YouTube video)
-            const trailer = videos.results.find(v => v.site === 'YouTube' && v.type === 'Trailer');
+            const trailer = videos.results && videos.results.find(v => v.site === 'YouTube' && v.type === 'Trailer');
             const trailerSrc = trailer ? `https://www.youtube.com/embed/${trailer.key}` : '';
 
-            // Format cast (top 10)
-            const cast = credits.cast.slice(0, 10).map(person => `
+            const cast = credits.cast && credits.cast.slice(0, 10).map(person => `
                 <div class="cast-member">
                     <img src="${person.profile_path ? baseImageUrl + 'w185' + person.profile_path : 'https://via.placeholder.com/100x100?text=No+Image'}" 
-                         alt="${person.name}" class="cast-photo">
-                    <div class="cast-name">${person.name}</div>
-                    <div class="cast-character">${person.character || 'N/A'}</div>
+                         alt="${sanitizeHTML(person.name)}" class="cast-photo">
+                    <div class="cast-name">${sanitizeHTML(person.name)}</div>
+                    <div class="cast-character">${sanitizeHTML(person.character || 'N/A')}</div>
                 </div>
-            `).join('');
+            `).join('') || '<p style="text-align:center; color:var(--text-light);">No cast information available.</p>';
             
-            // Format watch providers
             const usProviders = providers.results?.US;
             let providersHtml = '';
             
@@ -1117,8 +1189,8 @@
                         <div class="providers-list">
                             ${usProviders.flatrate.map(p => `
                                 <div class="provider">
-                                    <img src="${baseImageUrl}w45${p.logo_path}" alt="${p.provider_name}" class="provider-logo">
-                                    <div class="provider-name">${p.provider_name}</div>
+                                    <img src="${baseImageUrl}w45${p.logo_path}" alt="${sanitizeHTML(p.provider_name)}" class="provider-logo">
+                                    <div class="provider-name">${sanitizeHTML(p.provider_name)}</div>
                                 </div>
                             `).join('')}
                         </div>
@@ -1131,8 +1203,8 @@
                         <div class="providers-list">
                             ${usProviders.rent.map(p => `
                                 <div class="provider">
-                                    <img src="${baseImageUrl}w45${p.logo_path}" alt="${p.provider_name}" class="provider-logo">
-                                    <div class="provider-name">${p.provider_name}</div>
+                                    <img src="${baseImageUrl}w45${p.logo_path}" alt="${sanitizeHTML(p.provider_name)}" class="provider-logo">
+                                    <div class="provider-name">${sanitizeHTML(p.provider_name)}</div>
                                 </div>
                             `).join('')}
                         </div>
@@ -1145,8 +1217,8 @@
                         <div class="providers-list">
                             ${usProviders.buy.map(p => `
                                 <div class="provider">
-                                    <img src="${baseImageUrl}w45${p.logo_path}" alt="${p.provider_name}" class="provider-logo">
-                                    <div class="provider-name">${p.provider_name}</div>
+                                    <img src="${baseImageUrl}w45${p.logo_path}" alt="${sanitizeHTML(p.provider_name)}" class="provider-logo">
+                                    <div class="provider-name">${sanitizeHTML(p.provider_name)}</div>
                                 </div>
                             `).join('')}
                         </div>
@@ -1156,9 +1228,8 @@
                 providersHtml = '<p style="color:var(--text-light); text-align:center;">No watch providers information available for US.</p>';
             }
             
-            // Create detail view
             mainContainer.innerHTML = `
-                <button class="back-button" onclick="mainContainer.innerHTML = window.englishMoviesOriginalContent;"><i class="fas fa-arrow-left"></i> Back to English Movies</button>
+                <button class="back-button" onclick="goBackToEnglishMovies()"><i class="fas fa-arrow-left"></i> Back to English Movies</button>
 
                 <div class="movie-detail-wrapper">
                     ${movie.backdrop_path ? `<img src="${baseImageUrl}original${movie.backdrop_path}" class="detail-backdrop" alt="Backdrop">` : ''}
@@ -1166,23 +1237,23 @@
                         <div class="detail-header">
                             <div class="detail-poster">
                                 ${movie.poster_path ? 
-                                    `<img src="${baseImageUrl}w500${movie.poster_path}" alt="${movie.title}">` : 
+                                    `<img src="${baseImageUrl}w500${movie.poster_path}" alt="${sanitizeHTML(movie.title)}">` : 
                                     '<div class="no-image-placeholder-detail"><i class="fas fa-film"></i></div>'}
                             </div>
                             
                             <div class="detail-info">
-                                <h1 class="detail-title">${movie.title}</h1>
+                                <h1 class="detail-title">${sanitizeHTML(movie.title)}</h1>
                                 <div class="detail-meta">
                                     <span>${movie.release_date ? movie.release_date.slice(0, 4) : 'N/A'}</span>
                                     <span>${runtime}</span>
                                     <span class="detail-rating">⭐ ${movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A'}/10</span>
                                 </div>
                                 
-                                ${movie.tagline ? `<div class="tagline">"${movie.tagline}"</div>` : ''}
+                                ${movie.tagline ? `<div class="tagline">"${sanitizeHTML(movie.tagline)}"</div>` : ''}
                                 
                                 <div class="genre-list">${genres}</div>
                                 
-                                <p class="detail-overview">${movie.overview || 'No overview available.'}</p>
+                                <p class="detail-overview">${sanitizeHTML(movie.overview || 'No overview available.')}</p>
                                 
                                 ${movie.homepage ? `
                                     <a href="${movie.homepage}" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 8px;">
@@ -1191,10 +1262,10 @@
                                 ` : ''}
 
                                 <div class="action-buttons">
-                                    <button class="action-button ${watchlistButtonClass}" onclick="toggleWatchlist(${encodeURIComponent(JSON.stringify(movie))})">
+                                    <button class="action-button ${watchlistButtonClass}" onclick="toggleWatchlist(${movie.id})">
                                         ${watchlistButtonText}
                                     </button>
-                                    <button class="action-button ${favoritesButtonClass}" onclick="toggleFavorites(${encodeURIComponent(JSON.stringify(movie))})">
+                                    <button class="action-button ${favoritesButtonClass}" onclick="toggleFavorites(${movie.id})">
                                         ${favoritesButtonText}
                                     </button>
                                 </div>
@@ -1205,7 +1276,7 @@
                             <div class="trailer-container">
                                 <h3 class="section-title">Trailer</h3>
                                 <iframe class="trailer" src="${trailerSrc}" 
-                                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                                     allowfullscreen></iframe>
                             </div>
                         ` : ''}
@@ -1213,7 +1284,7 @@
                         <div class="cast-section">
                             <h3 class="section-title">Cast</h3>
                             <div class="cast-container">
-                                ${cast || '<p style="text-align:center; color:var(--text-light);">No cast information available.</p>'}
+                                ${cast}
                             </div>
                         </div>
                         
@@ -1226,132 +1297,59 @@
             `;
         }
 
+        // --- Go back to English movies list ---
+        function goBackToEnglishMovies() {
+            const mainContainer = document.getElementById('mainEnglishContainer');
+            mainContainer.innerHTML = `
+                <h1 class="page-title">All English Movies</h1>
+                <div id="loading" class="loading-indicator">
+                    <i class="fas fa-spinner fa-spin"></i> Loading English movies...
+                </div>
+                <div id="englishMoviesContent"></div>
+            `;
+            displayEnglishMoviesByGenre();
+        }
 
-        // Main initialization function
+        // --- Main initialization function ---
         async function initEnglishMoviesPage() {
-            document.getElementById('loading').style.display = 'block'; // Show loading indicator
-            document.getElementById('loading').textContent = 'Loading English movies...'; // Reset text
+            const loadingIndicator = document.getElementById('loading');
+            loadingIndicator.style.display = 'block';
+            loadingIndicator.textContent = 'Loading English movies...';
 
-            loadLists(); // Load watchlist and favorites from local storage
+            loadLists();
 
             try {
-                await fetchGenres(); // Fetch genres first
+                await fetchGenres();
                 if (allGenres.length === 0) {
-                    // If genres couldn't be fetched, display an error and stop
-                    document.getElementById('loading').textContent = 'Failed to load movie genres. Cannot display movies. Please check your internet connection or API key.';
+                    loadingIndicator.textContent = 'Failed to load movie genres. Cannot display movies. Please check your internet connection or API key.';
                     return;
                 }
 
-                // Fetch multiple pages of English movies to get a comprehensive list
-                // TMDB API limits to 20 pages for discover endpoint, fetching 5 pages for a good sample
-                const totalPagesToFetch = 5; 
-                let allEnglishMovies = [];
+                const totalPagesToFetch = 5;
+                allEnglishMovies = [];
 
                 for (let i = 1; i <= totalPagesToFetch; i++) {
                     const data = await fetchEnglishMovies(i);
                     allEnglishMovies = allEnglishMovies.concat(data.results);
-                    // Optional: Add a delay here if you hit API rate limits
-                    // await new Promise(resolve => setTimeout(resolve, 200)); 
                 }
                 
                 if (allEnglishMovies.length === 0) {
-                    document.getElementById('loading').textContent = 'No English movies found or failed to load movies.';
+                    loadingIndicator.textContent = 'No English movies found or failed to load movies.';
                     return;
                 }
 
-                groupMoviesByGenre(allEnglishMovies); // Group them
-                document.getElementById('loading').style.display = 'none'; // Hide loading indicator
-                displayEnglishMoviesByGenre(); // Display them
+                groupMoviesByGenre(allEnglishMovies);
+                loadingIndicator.style.display = 'none';
+                displayEnglishMoviesByGenre();
 
             } catch (error) {
                 console.error('Initialization failed:', error);
-                // Error message already set by fetchGenres if it failed
-                // If error came from fetchEnglishMovies, it would be logged there
+                loadingIndicator.textContent = 'Failed to initialize. Please try again.';
             }
         }
 
-        // Initialize the page when the DOM is fully loaded
+        // --- Initialize the page ---
         document.addEventListener('DOMContentLoaded', initEnglishMoviesPage);
     </script>
-    <!-- Full corrected HTML with the required features injected -->
-<!-- No changes made to existing code structure, only new features appended -->
-
-<style>
-/* Custom styling to match 'Back to Home' button */
-.back-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin: 30px 0 20px;
-    padding: 12px 25px;
-    background-color: rgba(60, 60, 60, 0.4);
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 16px;
-    border: 1px solid rgba(90, 90, 90, 0.3);
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-}
-
-.back-button:hover {
-    background-color: rgba(255, 102, 0, 0.15);
-    border-color: var(--primary);
-    color: var(--primary);
-    transform: translateX(-5px);
-    box-shadow: 0 4px 10px rgba(255, 102, 0, 0.3);
-}
-</style>
-
-<script>
-// Allow back button to work properly from detail view
-function backToEnglishMovies() {
-    if (window.englishMoviesOriginalContent) {
-        const mainContainer = document.getElementById('mainEnglishContainer');
-        mainContainer.innerHTML = window.englishMoviesOriginalContent;
-    } else {
-        window.location.href = 'english.html';
-    }
-}
-
-// Fix action buttons (watchlist/favorite) toggle bug (parse properly from button attributes)
-function decodeMovieData(encodedData) {
-    try {
-        return JSON.parse(decodeURIComponent(encodedData));
-    } catch (e) {
-        console.error("Error decoding movie data:", e);
-        return null;
-    }
-}
-
-// Replace toggleWatchlist and toggleFavorites button handlers to decode properly
-// This change assumes buttons are created like this:
-// onclick="toggleWatchlist(encodeURIComponent(JSON.stringify(movie)))"
-// Now redefine toggleWatchlist and toggleFavorites to decode movie
-const oldToggleWatchlist = toggleWatchlist;
-const oldToggleFavorites = toggleFavorites;
-
-function toggleWatchlist(encodedMovie) {
-    const movie = typeof encodedMovie === 'string' ? decodeMovieData(encodedMovie) : encodedMovie;
-    if (movie) oldToggleWatchlist(movie);
-}
-
-function toggleFavorites(encodedMovie) {
-    const movie = typeof encodedMovie === 'string' ? decodeMovieData(encodedMovie) : encodedMovie;
-    if (movie) oldToggleFavorites(movie);
-}
-
-// Bind back button dynamically (in case not set)
-document.addEventListener("click", function (e) {
-    if (e.target.closest(".back-button")?.textContent?.includes("Back to English Movies")) {
-        e.preventDefault();
-        backToEnglishMovies();
-    }
-});
-</script>
-
-
 </body>
 </html>
