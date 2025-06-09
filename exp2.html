@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MovieSearch - Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" xintegrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /* Base Styles */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
@@ -930,13 +930,13 @@
         <img src="logo.jpg" alt="MovieSearch Logo" class="logo">
         <div class="nav-links">
             <a href="#" id="homeNav"><i class="fas fa-home"></i> Home</a>
-            <a href="#" id="trendingNav"><i class="fas fa-fire"></i> Trending</a>
+            <!-- Optional: Uncomment to add Trending link -->
+            <!-- <a href="#" id="trendingNav"><i class="fas fa-fire"></i> Trending</a> -->
             <a href="#" id="watchlistNav"><i class="fas fa-list"></i> Watchlist</a>
-            <a href="#"><i class="fas fa-list "></i>Contact us </a>
-            <a href="#"><i class="fas fa-list "></i>Feedback </a>
-            <a href="cini.html"><i class="fas fa-🎬 "></i>CiniMate</a>
+            <a href="#" id="favoritesNav"><i class="fas fa-heart"></i> Favorites</a>
+            <a href="cont.html"><i class="fas fa-list"></i> Contact us</a>
+            <a href="cini.html"><i class="fas fa-film"></i> CiniMate</a>
             <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
-           
         </div>
     </nav>
 
@@ -1260,6 +1260,7 @@
 
         // Display movies in a grid (for search results, watchlist, favorites)
         function displayMoviesInGrid(movies, containerDiv) {
+            console.log('Movies to display:', movies); // Debug: Log movies being rendered
             containerDiv.innerHTML = ''; // Clear previous content
 
             if (movies.length === 0) {
@@ -1598,6 +1599,7 @@
         }
 
         async function showWatchlist() {
+            console.log('Watchlist:', watchlist); // Debug: Log watchlist array
             showSection('watchlistSection');
             const watchlistMoviesDiv = document.getElementById('watchlistMovies');
             const watchlistEmptyMessage = document.getElementById('watchlistEmptyMessage');
@@ -1625,6 +1627,7 @@
         }
 
         async function showFavorites() {
+            console.log('Favorites:', favorites); // Debug: Log favorites array
             showSection('favoritesSection');
             const favoritesMoviesDiv = document.getElementById('favoritesMovies');
             const favoritesEmptyMessage = document.getElementById('favoritesEmptyMessage');
@@ -1657,17 +1660,31 @@
             initializeHomePage(); // Show home content by default
 
             // Set up navigation bar link event listeners
-            document.getElementById('homeNav').onclick = initializeHomePage;
-            document.getElementById('trendingNav').onclick = showTrendingPage; 
-            document.getElementById('watchlistNav').onclick = showWatchlist;
-            document.getElementById('favoritesNav').onclick = showFavorites;
+            document.getElementById('homeNav').onclick = (event) => {
+                event.preventDefault();
+                initializeHomePage();
+            };
+            document.getElementById('watchlistNav').onclick = (event) => {
+                event.preventDefault();
+                console.log('Watchlist clicked', watchlist); // Debug
+                showWatchlist();
+            };
+            document.getElementById('favoritesNav').onclick = (event) => {
+                event.preventDefault();
+                console.log('Favorites clicked', favorites); // Debug
+                showFavorites();
+            };
             
             // Set up search button click listener
-            document.querySelector('.search-button').onclick = searchMovies;
+            document.querySelector('.search-button').onclick = (event) => {
+                event.preventDefault();
+                searchMovies();
+            };
 
             // Set up language button click listeners for navigation
             document.querySelectorAll('.language-button').forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
                     document.querySelectorAll('.language-button').forEach(btn => btn.classList.remove('active'));
                     this.classList.add('active');
                     const pageName = this.dataset.page; 
@@ -1675,13 +1692,25 @@
                 });
             });
         });
-        searchInput.addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-        searchMovies(); // Calls your existing search function
-    }
-});
 
+        // Handle Enter key for search
+        searchInput.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                searchMovies();
+            }
+        });
+
+        // Ensure language buttons redirect correctly
+        document.querySelectorAll('.language-button').forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                const page = button.getAttribute('data-page');
+                if (page) {
+                    window.location.href = page;
+                }
+            });
+        });
     </script>
-    
 </body>
 </html>
