@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieSearch - Contact, Help & Feedback</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="cont.css">
+</head>
+<body class="p-0">
+    <nav class="navbar">
+        <img src="logo.jpg" alt="MovieSearch Logo" class="logo">
+        <div class="nav-links">
+            <a href="exp2.html"><i class="fas fa-home"></i> Home</a>
+            <a href="#" id="feedbackButton"><i class="fas fa-comment-dots"></i> Feedback</a>
+            <a href="#" id="aboutUsButton"><i class="fas fa-users"></i> About Us</a>
+        </div>
+    </nav>
+
+    <div id="feedbackModal" class="modal hidden">
+        <div class="modal-content feedback-container">
+            <span class="close-button" data-modal="feedbackModal">×</span>
+            <h1>MovieSearch App Feedback</h1>
+            <p>We'd love to hear your thoughts on our app!</p>
+            <form id="feedbackForm" action="https://formspree.io/f/xblygadn" method="POST">
+                <div class="form-group">
+                    <label for="name">Your Name (Optional):</label>
+                    <input type="text" id="name" name="name" placeholder="E.g., John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Email (Optional):</label>
+                    <input type="email" id="email" name="email" placeholder="E.g., your@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="rating">Overall Rating:</label>
+                    <div class="stars" id="rating">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                    </div>
+                    <input type="hidden" id="selectedRating" name="rating" required>
+                </div>
+                <div class="form-group">
+                    <label for="features">What features do you like most?</label>
+                    <textarea id="features" name="features" rows="4" placeholder="Tell us what you love!"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="improvements">What improvements would you suggest?</label>
+                    <textarea id="improvements" name="improvements" rows="4" placeholder="How can we make it better?"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="convenience">What improvements can we make to enhance the app’s convenience for users?</label>
+                    <textarea id="convenience" name="convenience" rows="4" placeholder="Share your ideas to make the app more user-friendly!"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="navigation">How can we improve the app’s navigation and accessibility?</label>
+                    <textarea id="navigation" name="navigation" rows="4" placeholder="Tell us how we can improve navigation and accessibility."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="bugs">Did you encounter any bugs or issues?</label>
+                    <textarea id="bugs" name="bugs" rows="3" placeholder="Describe any problems you faced."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Would you recommend MovieSearch App to others?</label>
+                    <div class="radio-group">
+                        <input type="radio" id="recommendYes" name="recommend" value="yes" required>
+                        <label for="recommendYes" class="inline-label">Yes</label>
+                        <input type="radio" id="recommendNo" name="recommend" value="no">
+                        <label for="recommendNo" class="inline-label">No</label>
+                        <input type="radio" id="recommendMaybe" name="recommend" value="maybe">
+                        <label for="recommendMaybe" class="inline-label">Maybe</label>
+                    </div>
+                </div>
+                <button type="submit">Submit Feedback</button>
+            </form>
+            <div id="thankYouMessage" class="hidden">
+                <h2>Thank You for Your Feedback!</h2>
+                <p>Your input is valuable and helps us improve the MovieSearch App.</p>
+                <button id="resetFormButton" class="reset-button">Submit Another Feedback</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="aboutUsModal" class="modal hidden">
+        <div class="modal-content about-us-container">
+            <span class="close-button" data-modal="aboutUsModal">×</span>
+            <h1>About Us</h1>
+            <p>We are a passionate team behind MovieSearch, dedicated to helping you discover and enjoy movies.</p>
+            <div class="team-members">
+                <div class="team-member-profile">
+                    <h3>Satya Sravani Kothapalli</h3>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/satya-sravani-kothapalli" target="_blank" class="social-link">
+                            <i class="fab fa-linkedin"></i> LinkedIn
+                        </a>
+                        <a href="https://github.com/SatyaSravaniKothapalli" target="_blank" class="social-link">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                        <a href="mailto:satyasravanikothapalli@gmail.com" class="social-link">
+                            <i class="fas fa-envelope"></i> Email
+                        </a>
+                        <a href="sravaniresume.html" target="_blank" class="social-link resume-link">
+                            <i class="fas fa-file-alt"></i> View Resume
+                        </a>
+                    </div>
+                </div>
+                <div class="team-member-profile">
+                    <h3>Amrutha Mohan</h3>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/amrutha-mohan-3522a0322/" target="_blank" class="social-link">
+                            <i class="fab fa-linkedin"></i> LinkedIn
+                        </a>
+                        <a href="https://github.com/Amrutha-Tsavatapalli" target="_blank" class="social-link">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                        <a href="mailto:kesavamrutha999@gmail.com" class="social-link">
+                            <i class="fas fa-envelope"></i> Email
+                        </a>
+                        <a href="amruthaindex.html" target="_blank" class="social-link resume-link">
+                            <i class="fas fa-file-alt"></i> View Resume
+                        </a>
+                    </div>
+                </div>
+                <div class="team-member-profile">
+                    <h3>Sanjusri Dugyala</h3>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/sanjusri-dugyala/" target="_blank" class="social-link">
+                            <i class="fab fa-linkedin"></i> LinkedIn
+                        </a>
+                        <a href="https://github.com/Sanjusr1" target="_blank" class="social-link">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                        <a href="mailto:sanjusridugyala@gmail.com" class="social-link">
+                            <i class="fas fa-envelope"></i> Email
+                        </a>
+                        <a href="sanju.html" target="_blank" class="social-link resume-link">
+                            <i class="fas fa-file-alt"></i> View Resume
+                        </a>
+                    </div>
+                </div>
+                <div class="team-member-profile">
+                    <h3>Jhansi Lakshmi Suggu</h3>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/jhansi-lakshmi-suggu-37736a334" target="_blank" class="social-link">
+                            <i class="fab fa-linkedin"></i> LinkedIn
+                        </a>
+                        <a href="https://github.com/jhansi-0203" target="_blank" class="social-link">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                        <a href="mailto:suggujhansi@gmail.com" class="social-link">
+                            <i class="fas fa-envelope"></i> Email
+                        </a>
+                        <a href="jhansi.html" target="_blank" class="social-link resume-link">
+                            <i class="fas fa-file-alt"></i> View Resume
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-container">
+        <header class="main-header">
+            <h1 class="main-title">Find Answers Here!</h1>
+            <p class="main-subtitle">We're here to help you with any questions or support you need.</p>
+        </header>
+        <main class="content-grid">
+            <div class="content-block faq-full-width"> 
+                <h2 class="block-title">Frequently Asked Questions</h2>
+                <p class="text-text-light mb-6">Find quick answers to common questions about MovieSearch.</p>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">What is MovieSearch? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">MovieSearch is your go-to platform for discovering movies, tracking your watchlist, and saving your favorites. We provide details like overviews, cast, trailers, and where to watch.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">How do I add movies to my Watchlist? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">On any movie card or detail page, you'll see a bookmark icon. Click it to add the movie to your watchlist. Click it again to remove it.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">Can I change the movie language? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Yes! On the main search page, there's a language selector where you can choose your preferred language for movie titles and overviews.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">Is my data saved across sessions? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Currently, your watchlist and favorites are saved in your browser's local storage. If you clear your browser data or use a different device, they might not be available. We are working on cloud synchronization!</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">How do I search for movies by genre? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">On the main search page, use the genre filter dropdown to select a category like Action, Comedy, or Drama. The movie list will update to show matches for your selected genre.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">Can I share my watchlist with friends? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Not yet, but we're working on a feature to allow sharing your watchlist via a link or social media. Stay tuned for updates!</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">What should I do if a movie’s details are incorrect? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">If you notice incorrect details, please use the "Report an Issue" option on the movie’s detail page. Our team will review and update the information as needed.</div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <footer class="main-footer">
+        <p>© 2025 MovieSearch. All rights reserved.</p>
+    </footer>
+    <script src="cont.js"></script>
+</body>
+</html>
