@@ -54,7 +54,7 @@ Made with  by:
 
 - *Satya Sravani*
 - *Sanju Sri*
-- * Kesava Amrutha *
+- *Kesava Amrutha*
 - *Jhansi Lakshmi*
 
 
